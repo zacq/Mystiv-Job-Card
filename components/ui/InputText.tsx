@@ -1,7 +1,6 @@
 'use client'
 
 import { forwardRef, InputHTMLAttributes } from 'react'
-import { clsx } from 'clsx'
 
 interface InputTextProps extends InputHTMLAttributes<HTMLInputElement> {
   hasError?: boolean

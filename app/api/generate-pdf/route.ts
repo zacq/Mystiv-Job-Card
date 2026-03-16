@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { renderToBuffer } from '@react-pdf/renderer'
+import { renderToBuffer, DocumentProps } from '@react-pdf/renderer'
 import { JobCardSchema } from '@/lib/schema'
 import { JobCardDocument } from '@/components/pdf/JobCardDocument'
 import React from 'react'
@@ -22,12 +22,15 @@ export async function POST(request: NextRequest) {
     }
 
     const pdfBuffer = await renderToBuffer(
-      React.createElement(JobCardDocument, { data: parsed.data, recordId })
+      React.createElement(
+        JobCardDocument,
+        { data: parsed.data, recordId }
+      ) as React.ReactElement<DocumentProps>
     )
 
     const filename = `job-card-${parsed.data.vehicleReg.replace(/\s+/g, '-')}-${recordId}.pdf`
 
-    return new NextResponse(pdfBuffer, {
+    return new NextResponse(new Uint8Array(pdfBuffer), {
       status: 200,
       headers: {
         'Content-Type': 'application/pdf',
